@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SamPythonTemplateSanic
+
+Globals:
+  Function:
+    Timeout: 300
+    MemorySize: 512
+
+Resources:
+  SamPythonTemplateSanic:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.9
+      Environment:
+        Variables:
+          TZ: Asia/Taipei
+          DB_HOST: database.cfobcpkjxzq8.ap-northeast-1.rds.amazonaws.com
+          DB_PORT: 5432
+          DB_DATABASE: common
+          DB_USER: postgres
+          DB_PASSWORD: Think@TroN#50770329P@ssw0rD
+          API_TITLE: 測試 SANIC
+          API_DESCRIPTION: 描述這個API的區塊
+          API_ROOT_PATH: / # /docs locate 的區域
+
+      Architectures:
+        - x86_64
+
+      Events:
+        SanicHelloWorld:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: any
+
+Outputs:
+  SamPythonTemplateSanic:
+    Description: "API Gateway endpoint URL for HelloWorld function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/{proxy+}"
+  SamPythonTemplateSanic:
+    Description: "HelloWorld Lambda Function ARN"
+    Value: !GetAtt SamPythonTemplateSanic.Arn
+  HelloWorldFunctionIamRoleSanic:
+    Description: "Implicit IAM Role created for HelloWorld function"
+    Value: !GetAtt SamPythonTemplateSanic.Arn

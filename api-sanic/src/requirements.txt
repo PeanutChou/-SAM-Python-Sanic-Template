@@ -1,0 +1,5 @@
+requests
+pg8000
+sanic
+sanic-ext
+mangum
